@@ -173,3 +173,7 @@ S_BuyQuiver:
 		close;
 	}
 }
+// --------------------------------------------------
+//	Duplicates:
+// --------------------------------------------------
+izlude,138,160,6	duplicate(Inventor Jaax)	Inventor Jaax#izl	89
