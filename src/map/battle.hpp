@@ -692,6 +692,7 @@ struct Battle_Config
 	int mercenary_autoloot;
 	int mer_idle_no_share;
 	int idletime_mer_option;
+	int feature_refineui;
 
 #include "../custom/battle_config_struct.inc"
 };
