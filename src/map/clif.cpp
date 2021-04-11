@@ -16091,10 +16091,13 @@ void clif_parse_Mail_getattach( int fd, struct map_session_data *sd ){
 	}
 
 	if( attachment&MAIL_ATT_ZENY ){
-		if( msg->zeny + sd->status.zeny > MAX_ZENY ){
+		if( ( msg->zeny + sd->status.zeny + sd->mail.pending_zeny ) > MAX_ZENY ){
 			clif_mail_getattachment(sd, msg, 1, MAIL_ATT_ZENY); //too many zeny
 			return;
 		}else{
+			// Store the pending zeny (required for the "retrieve all" feature)
+			sd->mail.pending_zeny += msg->zeny;
+
 			// To make sure another request fails
 			msg->zeny = 0;
 		}
@@ -16125,7 +16128,7 @@ void clif_parse_Mail_getattach( int fd, struct map_session_data *sd ){
 			}
 		}
 
-		if( ( totalweight + sd->weight ) > sd->max_weight ){
+		if( ( totalweight + sd->weight + sd->mail.pending_weight ) > sd->max_weight ){
 			clif_mail_getattachment(sd, msg, 2, MAIL_ATT_ITEM);
 			return;
 		}else if( pc_inventoryblank(sd) < new_ ){
@@ -16135,6 +16138,9 @@ void clif_parse_Mail_getattach( int fd, struct map_session_data *sd ){
 
 		// To make sure another request fails
 		memset(msg->item, 0, MAIL_MAX_ITEM*sizeof(struct item));
+
+		// Store the pending weight (required for the "retrieve all" feature)
+		sd->mail.pending_weight += totalweight;
 	}
 
 	intif_mail_getattach(sd,msg, (enum mail_attachment_type)attachment);
@@ -21762,7 +21768,11 @@ void clif_refineui_info( struct map_session_data* sd, uint16 index ){
 
 		if( cost != nullptr ){
 			p->req[count].itemId = client_nameid( cost->nameid );
+<<<<<<< HEAD
 			p->req[count].chance = (uint8)cost->chance;
+=======
+			p->req[count].chance = (uint8)( cost->chance / 100 );
+>>>>>>> 5130b9f6e11b64a958a37e7b6cf9e7ad9885e5ab
 			p->req[count].zeny = cost->zeny;
 			count++;
 		}
@@ -21917,7 +21927,11 @@ void clif_parse_refineui_refine( int fd, struct map_session_data* sd ){
 	}
 
 	// Try to refine the item
+<<<<<<< HEAD
 	if( cost->chance >= ( rnd() % 100 ) ){
+=======
+	if( cost->chance >= ( rnd() % 10000 ) ){
+>>>>>>> 5130b9f6e11b64a958a37e7b6cf9e7ad9885e5ab
 		// Success
 		item->refine = cap_value( item->refine + 1, 0, MAX_REFINE );
 		clif_misceffect( &sd->bl, 3 );
@@ -21931,7 +21945,11 @@ void clif_parse_refineui_refine( int fd, struct map_session_data* sd ){
 		if( blacksmith_amount > 0 ){
 			clif_refine( fd, 3, index, item->refine );
 		// Delete the item if it is breakable
+<<<<<<< HEAD
 		}else if( cost->breaking_rate > 0 && ( rnd() % 100 ) < cost->breaking_rate ){
+=======
+		}else if( cost->breaking_rate > 0 && ( rnd() % 10000 ) < cost->breaking_rate ){
+>>>>>>> 5130b9f6e11b64a958a37e7b6cf9e7ad9885e5ab
 			clif_refine( fd, 1, index, item->refine );
 			pc_delitem( sd, index, 1, 0, 0, LOG_TYPE_CONSUME );
 		// Downgrade the item if necessary
