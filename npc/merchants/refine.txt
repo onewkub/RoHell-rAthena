@@ -621,6 +621,23 @@ lhz_in02,282,20,7	script	Fulerr	4_M_LGTMAN,{
 	}
 }
 
+izlude,150,130,7	script	Hollgrehenn#iz	4_M_03,{
+	if( getbattleflag( "feature.refineui" ) ){
+		mes "[Fulerr]";
+		mes "Hehe... You wanna refine?";
+		mes "Hehe.. Consider it done..";
+		mes "Hehe....";
+		close2;
+		refineui();
+		end;
+	}else{
+		callfunc "refinemain","Fulerr",0;
+		end;
+	}
+}
+
+
+
 //============================================================
 //= Main Refiner Function
 //============================================================

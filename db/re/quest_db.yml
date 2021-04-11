@@ -7291,7 +7291,7 @@ Body:
     Title: Meeting Hugin
   - Id: 12317
     Title: Trace of Time Travel
-    TimeLimit: +23h
+    TimeLimit: +1s
   - Id: 12318
     Title: Corrupted Soul Hunt
     Targets:
@@ -7330,7 +7330,7 @@ Body:
     TimeLimit: +23h
   - Id: 12334
     Title: Trace of Time Travel
-    TimeLimit: +23h
+    TimeLimit: +1s
   - Id: 12335
     Title: Space Distortion
   - Id: 12338
