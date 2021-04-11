@@ -378,11 +378,7 @@ lhz_in02,280,19,3	duplicate(MightyHammer)	Mighty Hammer#lhz	4_M_DWARF
 		next;
 		mes "[Basta]";
 		mes "Damn it!";
-<<<<<<< HEAD
-		mes "Refining failed and refine level has decreased!";
-=======
 		mes "Refining has failed and refine level has decreased!";
->>>>>>> 5130b9f6e11b64a958a37e7b6cf9e7ad9885e5ab
 		mes "Even the best blacksmith in the world doesn't guarantee 100% success!";
 	}
 	mes "Too bad.";
