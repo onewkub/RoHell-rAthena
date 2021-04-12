@@ -12,8 +12,9 @@ mes "^FF0000Your VIP Status will Expire at:^000000";
 mes gettimestr("%Y-%m/%d %H:%M:%S",21,vip_status(VIP_STATUS_EXPIRE));
 mes "^FF0000Time Left: ^000000" + callfunc("Time2Str",.@Timer);
 next;
-switch(select("Buy items:Get buffs:No, thanks.")) {
-	case 1:
+//switch(select("Buy items:Get buffs:No, thanks.")) {
+switch(select("Get buffs:No, thanks.")) {
+/*	case 1:
 		mes "Choose items do you wants.";
 		goto item_list;
 
@@ -69,7 +70,7 @@ switch(select("Buy items:Get buffs:No, thanks.")) {
 		set zeny,zeny-10000;
 		}
 		close;
-
+*/
 	case 2:
 		mes "Choose which one do you wants.";
 		mes "First Buff ^FF0000STR +8, AGI +6, DEX +4, ATK +32^000000";
@@ -205,7 +206,7 @@ einbroch,72,206,4	duplicate(VIP System)	VIP System#einbr	109
 geffen,127,66,4	duplicate(VIP System)	VIP System#gef	109
 gonryun,162,126,4	duplicate(VIP System)	VIP System#gon	109
 hugel,102,148,4	duplicate(VIP System)	VIP System#hug	109
-izlude,128,152,4	duplicate(VIP System)	VIP System#izl	109	//Pre-RE: (132,120)
+izlude,119,156,4	duplicate(VIP System)	VIP System#izl	109	//Pre-RE: (132,120)
 jawaii,248,134,4	duplicate(VIP System)	VIP System#jaw	109
 lighthalzen,154,104,4	duplicate(VIP System)	VIP System#lhz	109
 louyang,205,105,6	duplicate(VIP System)	VIP System#lou	109
