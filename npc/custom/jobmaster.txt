@@ -13,6 +13,7 @@
 //= 1.7 Readability changes. Also added BabyExpanded and BabySummoner classes. [Jey]
 //= 1.8 Added option to disable Baby Novice Only but Baby Class can be Enabled [mazvi]
 //= 1.9 Migrate/Integrate to Global Functions Platinum Skills. [mazvi]
+//= 2.0 Star Emperor Soul Reaper added. by Edward Luciano
 //============================================================
 
 izlude,125,148,6	script	Job Master	123,{
@@ -71,8 +72,8 @@ function	Can_Rebirth	{
 		return false; // Rebirth disabled
 	if( !(eaclass()&EAJL_2) )
 		return false; // Not second Class
-	if( eaclass()&(EAJL_UPPER|EAJL_THIRD) )
-		return false; // Already Rebirthed/ Third Class
+	if( eaclass()&EAJL_UPPER )
+		return false; // Already Rebirthed
 	if( roclass(eaclass()|EAJL_UPPER) < 0 )
 		return false; // Job has no transcended class
 	if( Is_Baby() && !.BabyClass )
@@ -126,6 +127,7 @@ function	Job_Options	{
 	Check_SkillPoints();
 
 	// initialisation
+	deletearray .@job_opt[0],getarraysize(.@job_opt);
 	.@eac = eaclass();
 	.@third_possible = Can_Change_Third();
 	.@rebirth_possible = Can_Rebirth();
@@ -161,6 +163,16 @@ function	Job_Options	{
 			Job_Options(.@job_opt,roclass(.@eac|EAJL_THIRD)); // Expanded SN is "third" cls
 		}
 	}
+    if (.Third && (.@eac&EAJ_UPPER) == EAJ_STAR_GRADIATOR && !(eaclass()&EAJL_THIRD)  ||
+		.Third && (.@eac&EAJ_UPPER) == EAJ_STAR_GRADIATOR && !(eaclass()&EAJL_THIRD)) // is Star Gradiator or Soul Linker and not alreay third
+	   {				 	 
+		// (Baby) Super Novice to Expanded (Baby) Super Novice
+	   	if( !Is_Baby(.@eac) || (.BabyClass && .BabyExpanded) ) {
+			// .BabyClass & .BabyExpanded must be enabled if the is a baby
+			Require_Level(.Req_Exp_SE_SR[0], .Req_Exp_SE_SR[1]);
+			Job_Options(.@job_opt,roclass(.@eac|EAJL_THIRD)); // SE & SR is "third" cls
+		}
+	}
 	
 	if (.SecondExpanded && 
 		((.@eac&(~EAJL_BABY)) == EAJ_NINJA || 		// is (Baby) Ninja
@@ -184,7 +196,7 @@ function	Job_Options	{
 				// First job change
 				Job_Options(.@job_opt,Job_Swordman,
 					Job_Mage, Job_Archer, Job_Acolyte, Job_Merchant, Job_Thief,
-					Job_Super_Novice, Job_Taekwon, Job_Gunslinger, Job_Ninja);
+					Job_Super_Novice, Job_Taekwon, Job_Gunslinger, Job_Ninja, Job_Star_Emperor, Job_Soul_Reaper);
 				if( .BabyNovice )
 					Job_Options(.@job_opt, Job_Baby);
 				break;
@@ -299,7 +311,6 @@ function	Job_Menu	{
 
 // Executes the actual jobchange and closes.
 function	Job_Change	{
-	.@previous_class = Class;
 	.@to_cls = getarg(0);
 	next;
 	mes .NPCName$;
@@ -316,12 +327,10 @@ function	Job_Change	{
 	}
 	specialeffect2 EF_ANGEL2;
 	specialeffect2 EF_ELECTRIC;
-	if (.@previous_class != Class) {
-		if (.Platinum)
-			callfunc "F_GetPlatinumSkills";
-		if (.GetJobEquip)
-			Get_Job_Equip();
-	}
+	if (.Platinum)
+		callfunc "F_GetPlatinumSkills";
+	if (.GetJobEquip)
+		Get_Job_Equip();
 	close; // Always closes after the change
 }
 
@@ -329,7 +338,7 @@ function	Confirm_Change	{
 	// Player confirms he want to change into .@class
 	.@class = getarg(0, -1);
 	.@back = getarg(1, false);
-	if( .@class < 0 || eaclass(.@class) == -1 ) {
+	if( .@class < 0 ) {
 		mes "Unknown Class Error.";
 		close;
 	}
@@ -459,22 +468,18 @@ OnInit:
 	.ThirdClass = true;			// Enable third classes?
 	.RebirthClass = true;			// Enable rebirth classes?
 	.SecondExpanded = true;		// Enable new expanded second classes: Ex. Super Novice, Kagerou/Oboro, Rebellion?
+    .Third = true;		// Enable Third classes of Star Gradiator, Soul Linker
 	.BabyNovice = true;	// Enable Baby novice classes? Disable it if you like player must have parent to get job baby.
 	.BabyClass = true;				// Enable Baby classes?
 	.BabyThird = true;				// Enable Baby third classes?
 	.BabyExpanded = true;			// Enable Baby Expanded classes: Ex. Baby Ninja, Baby Taekwon, etc.
-	.BabySummoner = true;			// Enable Baby Summoner?
-	.LastJob = true;				// Enforce linear class changes?
-	.SkillPointCheck = true;		// Force player to use up all skill points?
-	.Platinum = true;				// Get platinum skills automatically?
-	.GetJobEquip = false;			// Get job equipment (mostly weapons) on job change?
-
 	// Level Requirements
 	setarray .Req_First[0],1,10; 		// Minimum base level, job level to turn into 1st class
 	setarray .Req_Second[0],1,40; 		// Minimum base level, job level to turn into 2nd class
 	setarray .Req_Rebirth[0],99,50;		// Minimum base level, job level to rebirth
-	setarray .Req_Third[0],99,50;		// Minimum base level, job level to change to third class
+	setarray .Req_Third[0],99,70;		// Minimum base level, job level to change to third class
 	setarray .Req_Exp_NJ_GS[0],99,70; 	// Minimum base level, job level to turn into Expanded Ninja and Gunslinger
+	setarray .Req_Exp_SE_SR[0],99,50; 	// Minimum base level, job level to third class Star Emperor and Soul Reaper
 	setarray .Req_Exp_SNOVI[0],99,99; 	// Minimum base level, job level to turn into Expanded Super Novice
 	.SNovice = 45;						// Minimum base level to turn into Super Novice
 	
@@ -489,4 +494,3 @@ OnInit:
 	}
 	end;
 }
-
