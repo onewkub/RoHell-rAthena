@@ -71,7 +71,7 @@ switch(select("Get buffs:No, thanks.")) {
 		}
 		close;
 */
-	case 2:
+	case 1:
 		mes "Choose which one do you wants.";
 		mes "First Buff ^FF0000STR +8, AGI +6, DEX +4, ATK +32^000000";
 		mes "Second Buffs ^FF0000INT +8, DEX +6, VIT +4, MATK +40^000000";
