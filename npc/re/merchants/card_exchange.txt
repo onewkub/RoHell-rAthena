@@ -18,7 +18,7 @@
 
 // Main NPC :: Card_Change_tw
 //============================================================
-comodo,148,306,4	script	Card Vendor Machine#pa08	562,{
+izlude,116,130,4	script	Card Vendor Machine#pa08	562,{
 	if (checkweight(1201,1) == 0) {
 		mes "You have too many items, please reduce it and come back later!";
 		close;
